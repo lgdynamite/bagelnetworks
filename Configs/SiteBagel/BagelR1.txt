@@ -1,0 +1,122 @@
+BagelR1#sho run
+Building configuration...
+
+Current configuration : 1636 bytes
+!
+! Last configuration change at 00:21:59 UTC Fri Mar 8 2024 by admin
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname BagelR1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$eGnh$MIPYlDGZR.hTnLjJxeNus.
+!
+no aaa new-model
+memory-size iomem 10
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain name bagelnetworks.com
+ip cef
+no ipv6 cef
+multilink bundle-name authenticated
+!
+cts logging verbose
+!
+!
+license udi pid CISCO1921/K9 sn FGL224030FM
+!
+!
+username admin secret 5 $1$1Qy.$2DaCUUE3vjq2G6FkrLhha1
+username auvik secret 5 $1$XRHe$dlbaco3LoK54eaSnbeZCM1
+!
+redundancy
+!
+!
+ip ssh version 2
+!
+!
+!
+!
+interface Embedded-Service-Engine0/0
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0/0
+ description Connection to BagleDC
+ ip address 172.16.10.21 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ description Connection to BagleFirewall
+ ip address 172.16.10.18 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface Serial0/0/0
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/0/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+!
+router eigrp 30
+ network 172.16.10.16 0.0.0.3
+ network 172.16.10.20 0.0.0.3
+ auto-summary
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+control-plane
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line 2
+ no activation-character
+ no exec
+ transport preferred none
+ transport output pad telnet rlogin lapb-ta mop udptn v120 ssh
+ stopbits 1
+line vty 0 4
+ logging synchronous
+ login local
+ transport input ssh
+!
+scheduler allocate 20000 1000
+!
+end
+
+BagelR1#

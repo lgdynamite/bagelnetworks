@@ -1,0 +1,222 @@
+BagelDC#sho run
+Building configuration...
+
+Current configuration : 5337 bytes
+!
+version 12.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname BagelDC
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 $1$62og$5MPlswSZGlcJpeG0Ql8890
+!
+username admin secret 5 $1$PJ0K$sEcyE49ttX4HFrakTK1l0.
+username auvik secret 5 $1$R0G6$MQzB8B.uNJxqhQN4eDjTc1
+!
+!
+no aaa new-model
+system mtu routing 1500
+ip routing
+ip domain-name bagelnetworks.com
+ip dhcp excluded-address 172.16.224.1 172.16.224.19
+ip dhcp excluded-address 172.16.130.1 172.16.130.19
+!
+ip dhcp pool Management
+   network 172.16.224.0 255.255.255.192
+   default-router 172.16.224.1
+   dns-server 1.1.1.1 9.9.9.9
+   domain-name bagelnetwork.com
+   lease 2
+!
+ip dhcp pool Users_1
+   network 172.16.130.0 255.255.254.0
+   dns-server 1.1.1.1 9.9.9.9
+   domain-name bagelnetwork.com
+   default-router 172.16.130.1
+   lease 2
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-476299264
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-476299264
+ revocation-check none
+ rsakeypair TP-self-signed-476299264
+!
+!
+crypto pki certificate chain TP-self-signed-476299264
+ certificate self-signed 01
+  3082023E 308201A7 A0030201 02020101 300D0609 2A864886 F70D0101 04050030
+  30312E30 2C060355 04031325 494F532D 53656C66 2D536967 6E65642D 43657274
+  69666963 6174652D 34373632 39393236 34301E17 0D393330 33303130 30303133
+  355A170D 32303031 30313030 30303030 5A303031 2E302C06 03550403 1325494F
+  532D5365 6C662D53 69676E65 642D4365 72746966 69636174 652D3437 36323939
+  32363430 819F300D 06092A86 4886F70D 01010105 0003818D 00308189 02818100
+  E47F2C67 F5656AAD 5670BB74 844C69F8 243C1BD0 4224DF32 3F1E67F8 A68927AB
+  9D2B33B2 6B734361 298A15EB B095C1A5 AEC80A79 BBCF19FE 99BF686B A89A32AF
+  0AE4AA93 7D60B03F 9DA4B07B 912259E6 10550B77 BC7FB424 6A9686BB 1D9BB422
+  AC59811D CDA4DE8B B8AE6B47 8B1F706B FE03DF75 A817C0B7 C50B639F 4722829B
+  02030100 01A36830 66300F06 03551D13 0101FF04 05300301 01FF3013 0603551D
+  11040C30 0A820842 61676C65 44432E30 1F060355 1D230418 30168014 402FCBA7
+  7F66F432 8AFB5CB5 FD050424 8646E4FF 301D0603 551D0E04 16041440 2FCBA77F
+  66F4328A FB5CB5FD 05042486 46E4FF30 0D06092A 864886F7 0D010104 05000381
+  8100708D 4533C9C4 324AB2BB 8BEF9C36 3380D8CD 09EB7B88 2078DC05 AAEC961A
+  D60B1544 B93B7033 700CDC1D 4C77CF71 0548347A C3392199 54817849 ED74C355
+  774CA891 6D33F396 303AA527 3E42A0DD 6015F859 1383F544 85C385B3 2BC8C330
+  40FF3D63 F308BC72 538145E3 3457AC0A 396685CD F58D43A1 18923981 1BE51F16 2E2B
+  quit
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+ip ssh version 2
+!
+!
+interface GigabitEthernet0/1
+ description Connection to BagleR1
+ no switchport
+ ip address 172.16.10.22 255.255.255.252
+!
+interface GigabitEthernet0/2
+ switchport access vlan 224
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface GigabitEthernet0/3
+!
+interface GigabitEthernet0/4
+!
+interface GigabitEthernet0/5
+!
+interface GigabitEthernet0/6
+!
+interface GigabitEthernet0/7
+!
+interface GigabitEthernet0/8
+!
+interface GigabitEthernet0/9
+!
+interface GigabitEthernet0/10
+!
+interface GigabitEthernet0/11
+!
+interface GigabitEthernet0/12
+!
+interface GigabitEthernet0/13
+ switchport access vlan 224
+ switchport mode access
+!
+interface GigabitEthernet0/14
+!
+interface GigabitEthernet0/15
+!
+interface GigabitEthernet0/16
+!
+interface GigabitEthernet0/17
+!
+interface GigabitEthernet0/18
+!
+interface GigabitEthernet0/19
+!
+interface GigabitEthernet0/20
+!
+interface GigabitEthernet0/21
+!
+interface GigabitEthernet0/22
+!
+interface GigabitEthernet0/23
+!
+interface GigabitEthernet0/24
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 876
+ switchport trunk allowed vlan 77
+ switchport mode trunk
+!
+interface GigabitEthernet0/25
+!
+interface GigabitEthernet0/26
+!
+interface GigabitEthernet0/27
+!
+interface GigabitEthernet0/28
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan77
+ description Default Gateway for Server VLAN
+ ip address 172.16.77.1 255.255.255.224
+!
+interface Vlan100
+ description Default Gateway for HR VLAN
+ ip address 172.16.100.1 255.255.254.0
+!
+interface Vlan110
+ description Default Gateway for Finance VLAN
+ ip address 172.16.110.1 255.255.254.0
+!
+interface Vlan120
+ description Default Gateway for Executives VLAN
+ ip address 172.16.120.1 255.255.254.0
+!
+interface Vlan130
+ description Default Gateway for Users_1 VLAN
+ ip address 172.16.130.1 255.255.254.0
+!
+interface Vlan140
+ description Default Gateway for Guests_1 VLAN
+ ip address 172.16.140.1 255.255.254.0
+!
+interface Vlan150
+ description Default Gateway for Voice_1 VLAN
+ ip address 172.16.150.1 255.255.254.0
+!
+interface Vlan224
+ description Default Gateway for Management VLAN
+ ip address 172.16.224.1 255.255.255.192
+!
+!
+router eigrp 30
+ network 172.16.10.20 0.0.0.3
+ network 172.16.77.0 0.0.0.31
+ network 172.16.100.0 0.0.1.255
+ network 172.16.110.0 0.0.1.255
+ network 172.16.120.0 0.0.1.255
+ network 172.16.130.0 0.0.1.255
+ network 172.16.140.0 0.0.1.255
+ network 172.16.150.0 0.0.1.255
+ network 172.16.224.0 0.0.0.63
+ auto-summary
+ eigrp stub connected summary
+!
+ip classless
+ip http server
+ip http secure-server
+!
+!
+!
+line con 0
+ logging synchronous
+line vty 0 4
+ logging synchronous
+ login local
+ transport input ssh
+line vty 5 15
+ login
+!
+end
+
+BagelDC#

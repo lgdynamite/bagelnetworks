@@ -1,0 +1,159 @@
+AlphaFirewall# sho run
+: Saved
+
+:
+: Serial Number: FCH1819JV4R
+: Hardware:   ASA5512, 4096 MB RAM, CPU Clarkdale 2793 MHz, 1 CPU (2 cores)
+:
+ASA Version 9.8(4)32
+!
+hostname AlphaFirewall
+domain-name bagelnetworks.com
+enable password $sha512$5000$VFJxSQtaJgUluXBErP9tTg==$baTIcKU5FMxPpkBou5pPdw== pbkdf2
+names
+no mac-address auto
+
+!
+interface GigabitEthernet0/0
+ nameif Inside
+ security-level 100
+ ip address 10.50.10.17 255.255.255.252
+!
+interface GigabitEthernet0/1
+ nameif Outside
+ security-level 0
+ ip address dhcp
+!
+interface GigabitEthernet0/2
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface GigabitEthernet0/3
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface GigabitEthernet0/4
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface GigabitEthernet0/5
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Management0/0
+ description for management access
+ management-only
+ shutdown
+ nameif Mgnt
+ security-level 0
+ ip address 10.60.224.3 255.255.255.192
+!
+ftp mode passive
+dns server-group DefaultDNS
+ domain-name bagelnetworks.com
+object network 10.0.0.0-8
+ subnet 10.0.0.0 255.0.0.0
+access-list outside_access_in extended permit icmp any any
+access-list outside_access_in extended permit tcp any any
+access-list outside_access_in extended permit udp any any
+access-list nat_allowed_acl extended permit ip 10.0.0.0 255.0.0.0 any
+pager lines 24
+logging enable
+logging buffered informational
+logging host Inside 10.55.77.5
+flow-export destination Inside 10.55.77.5 2055
+flow-export template timeout-rate 15
+flow-export delay flow-create 60
+mtu Inside 1500
+mtu Outside 1500
+mtu Mgnt 1500
+no failover
+no failover wait-disable
+no monitor-interface service-module
+icmp unreachable rate-limit 1 burst-size 1
+no asdm history enable
+arp timeout 14400
+no arp permit-nonconnected
+arp rate-limit 8192
+!
+object network 10.0.0.0-8
+ nat (Inside,Outside) dynamic interface
+access-group outside_access_in in interface Outside
+router eigrp 40
+ auto-summary
+ network 10.50.10.16 255.255.255.252
+ passive-interface Outside
+ redistribute static
+!
+route Outside 0.0.0.0 0.0.0.0 10.33.10.1 1
+timeout xlate 3:00:00
+timeout pat-xlate 0:00:30
+timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
+timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
+timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
+timeout sip-provisional-media 0:02:00 uauth 0:05:00 absolute
+timeout tcp-proxy-reassembly 0:01:00
+timeout floating-conn 0:00:00
+timeout conn-holddown 0:00:15
+timeout igp stale-route 0:01:10
+user-identity default-domain LOCAL
+aaa authentication ssh console LOCAL
+aaa authentication login-history
+snmp-server host Inside 10.55.77.5 community ***** version 2c udp-port 161
+no snmp-server location
+no snmp-server contact
+crypto ipsec security-association pmtu-aging infinite
+crypto ca trustpool policy
+telnet timeout 5
+ssh stricthostkeycheck
+ssh 10.55.77.0 255.255.255.224 Inside
+ssh 10.90.130.0 255.255.254.0 Inside
+ssh 10.60.224.0 255.255.255.192 Inside
+ssh 10.55.77.0 255.255.255.224 Mgnt
+ssh 10.90.130.0 255.255.254.0 Mgnt
+ssh 10.60.224.0 255.255.255.192 Mgnt
+ssh timeout 5
+ssh key-exchange group dh-group1-sha1
+console timeout 0
+threat-detection basic-threat
+threat-detection statistics access-list
+threat-detection statistics tcp-intercept rate-interval 30 burst-rate 400 average-rate 200
+webvpn
+ hsts
+  enable
+  max-age 31536000
+  include-sub-domains
+  no preload
+ anyconnect-essentials
+ cache
+  disable
+ error-recovery disable
+dynamic-access-policy-record DfltAccessPolicy
+username auvik password $sha512$5000$PUnbKjxVC4tRosfUpr48Jg==$9ijjgYxfvhLnPrME7itSVg== pbkdf2
+username admin password $sha512$5000$QZoyFPwJ1TS6utHxpQ/KHw==$EuMmNHFvgr28FpjqV3SdQQ== pbkdf2
+!
+!
+prompt hostname context
+no call-home reporting anonymous
+call-home
+ profile CiscoTAC-1
+  no active
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination address email callhome@cisco.com
+  destination transport-method http
+  subscribe-to-alert-group diagnostic
+  subscribe-to-alert-group environment
+  subscribe-to-alert-group inventory periodic monthly
+  subscribe-to-alert-group configuration periodic monthly
+  subscribe-to-alert-group telemetry periodic daily
+Cryptochecksum:3f36372fe608df413b74dc014234ece0
+: end
+AlphaFirewall#

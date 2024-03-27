@@ -1,0 +1,126 @@
+AlphaR1#sho run
+Building configuration...
+
+Current configuration : 1718 bytes
+!
+! Last configuration change at 21:03:30 UTC Wed Mar 27 2024 by admin
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname AlphaR1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$xpIk$7dqvqxS9v0aHRsOqcGT8V.
+!
+no aaa new-model
+memory-size iomem 10
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+multilink bundle-name authenticated
+!
+cts logging verbose
+!
+!
+license udi pid CISCO1921/K9 sn FGL22413219
+!
+!
+username admin secret 5 $1$aW8G$DbEOqK.5Jl.b1X9odptMe.
+username auvik secret 5 $1$Id/Z$Xi2dhN/CvoO7FACoimk861
+!
+redundancy
+!
+!
+!
+!
+!
+!
+interface Embedded-Service-Engine0/0
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0/0
+ ip address 10.50.10.18 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ ip address 10.50.10.21 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface Serial0/0/0
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/0/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+!
+router eigrp 40
+ network 10.50.10.16 0.0.0.3
+ network 10.50.10.20 0.0.0.3
+!
+ip default-gateway 10.50.10.17
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+logging trap errors
+logging host 10.55.77.5
+!
+!
+snmp-server community C1sco RO
+!
+control-plane
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line 2
+ no activation-character
+ no exec
+ transport preferred none
+ transport output pad telnet rlogin lapb-ta mop udptn v120 ssh
+ stopbits 1
+line vty 0 4
+ password 7 123A540411044D07262A373B
+ logging synchronous
+ login local
+ transport input ssh
+line vty 5 15
+ password 7 123A540411044D07262A373B
+ login local
+ transport input ssh
+!
+scheduler allocate 20000 1000
+!
+end
+
+AlphaR1#

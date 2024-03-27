@@ -1,0 +1,282 @@
+AlphaDC#sho run
+Building configuration...
+
+Current configuration : 5490 bytes
+!
+version 12.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname AlphaDC
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 $1$SB4a$qfWC07o5PIUM7RCesujUR.
+!
+username admin secret 5 $1$XoRL$73pkQvIRObJtZpBjG1vmi0
+username auvik secret 5 $1$.2VC$.14/xscveip/0u.kECZM70
+!
+!
+no aaa new-model
+switch 1 provision ws-c3750x-48p
+system mtu routing 1500
+ip routing
+ip dhcp excluded-address 10.60.228.1 10.60.228.10
+ip dhcp excluded-address 10.90.130.1 10.90.130.10
+ip dhcp excluded-address 10.60.224.1 10.60.224.19
+!
+ip dhcp pool Wireless_Management
+   network 10.60.228.0 255.255.255.192
+   default-router 10.60.228.1
+   option 60 ascii "Cisco AP c3502"
+   option 43 hex f104.0aff.01fd
+!
+ip dhcp pool Users_Pool
+   network 10.90.130.0 255.255.254.0
+   default-router 10.90.130.1
+   dns-server 1.1.1.1
+   lease 2
+!
+ip dhcp pool Management
+   network 10.60.224.0 255.255.255.192
+   default-router 10.60.224.1
+   dns-server 1.1.1.1
+   lease 2
+!
+!
+no ip domain-lookup
+ip domain-name bagelnetworks.com
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+ip ssh version 2
+!
+!
+interface FastEthernet0
+ no ip address
+ no ip route-cache cef
+ no ip route-cache
+ shutdown
+!
+interface GigabitEthernet1/0/1
+ switchport access vlan 224
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface GigabitEthernet1/0/2
+!
+interface GigabitEthernet1/0/3
+!
+interface GigabitEthernet1/0/4
+!
+interface GigabitEthernet1/0/5
+!
+interface GigabitEthernet1/0/6
+!
+interface GigabitEthernet1/0/7
+!
+interface GigabitEthernet1/0/8
+ switchport access vlan 130
+ switchport mode access
+!
+interface GigabitEthernet1/0/9
+!
+interface GigabitEthernet1/0/10
+!
+interface GigabitEthernet1/0/11
+!
+interface GigabitEthernet1/0/12
+!
+interface GigabitEthernet1/0/13
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 678
+ switchport mode trunk
+!
+interface GigabitEthernet1/0/14
+ switchport access vlan 228
+ switchport mode access
+!
+interface GigabitEthernet1/0/15
+ description Connection to AlphaFirewall Management port
+ switchport access vlan 224
+ switchport mode access
+!
+interface GigabitEthernet1/0/16
+ switchport access vlan 228
+ switchport mode access
+!
+interface GigabitEthernet1/0/17
+!
+interface GigabitEthernet1/0/18
+!
+interface GigabitEthernet1/0/19
+!
+interface GigabitEthernet1/0/20
+!
+interface GigabitEthernet1/0/21
+!
+interface GigabitEthernet1/0/22
+!
+interface GigabitEthernet1/0/23
+ switchport access vlan 224
+ switchport mode access
+!
+interface GigabitEthernet1/0/24
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 678
+ switchport trunk allowed vlan 77,100,110,120,130,140,150,224,228,678
+ switchport mode trunk
+!
+interface GigabitEthernet1/0/25
+ no switchport
+ ip address 10.50.10.22 255.255.255.252
+!
+interface GigabitEthernet1/0/26
+!
+interface GigabitEthernet1/0/27
+!
+interface GigabitEthernet1/0/28
+!
+interface GigabitEthernet1/0/29
+!
+interface GigabitEthernet1/0/30
+!
+interface GigabitEthernet1/0/31
+!
+interface GigabitEthernet1/0/32
+!
+interface GigabitEthernet1/0/33
+!
+interface GigabitEthernet1/0/34
+!
+interface GigabitEthernet1/0/35
+!
+interface GigabitEthernet1/0/36
+!
+interface GigabitEthernet1/0/37
+!
+interface GigabitEthernet1/0/38
+!
+interface GigabitEthernet1/0/39
+!
+interface GigabitEthernet1/0/40
+!
+interface GigabitEthernet1/0/41
+!
+interface GigabitEthernet1/0/42
+!
+interface GigabitEthernet1/0/43
+!
+interface GigabitEthernet1/0/44
+!
+interface GigabitEthernet1/0/45
+!
+interface GigabitEthernet1/0/46
+!
+interface GigabitEthernet1/0/47
+!
+interface GigabitEthernet1/0/48
+!
+interface GigabitEthernet1/1/1
+!
+interface GigabitEthernet1/1/2
+!
+interface GigabitEthernet1/1/3
+!
+interface GigabitEthernet1/1/4
+!
+interface TenGigabitEthernet1/1/1
+!
+interface TenGigabitEthernet1/1/2
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan77
+ description Server VLAN Gateway
+ ip address 10.55.77.1 255.255.255.224
+!
+interface Vlan100
+ ip address 10.90.100.1 255.255.254.0
+!
+interface Vlan110
+ ip address 10.90.110.1 255.255.254.0
+!
+interface Vlan120
+ ip address 10.90.120.1 255.255.254.0
+!
+interface Vlan130
+ description UsersVlan1
+ ip address 10.90.130.1 255.255.254.0
+!
+interface Vlan140
+ ip address 10.90.140.1 255.255.254.0
+!
+interface Vlan150
+ ip address 10.90.150.1 255.255.254.0
+!
+interface Vlan224
+ description Management Vlan Gateway
+ ip address 10.60.224.1 255.255.255.192
+!
+interface Vlan228
+ description Wireless Management Gateway
+ ip address 10.60.228.1 255.255.255.192
+ ip access-group WirelessManWall in
+ ip access-group WirelessManWall out
+!
+!
+router eigrp 40
+ network 10.50.10.20 0.0.0.3
+ network 10.55.77.0 0.0.0.31
+ network 10.60.224.0 0.0.0.63
+ network 10.90.100.0 0.0.1.255
+ network 10.90.110.0 0.0.1.255
+ network 10.90.120.0 0.0.1.255
+ network 10.90.130.0 0.0.1.255
+ network 10.90.140.0 0.0.1.255
+ network 10.90.150.0 0.0.1.255
+ eigrp stub connected summary
+!
+ip classless
+ip http server
+ip http secure-server
+!
+ip access-list extended WirelessManWall
+ permit ip 10.60.228.0 0.0.0.63 any
+ permit ip 10.90.130.0 0.0.1.255 10.60.228.0 0.0.0.63
+ deny   ip any any
+ remark allows only wireless man and users network into wireless management
+!
+logging trap errors
+logging 10.55.77.5
+snmp-server community C1sco RO
+!
+vstack
+!
+line con 0
+ logging synchronous
+line vty 0 4
+ logging synchronous
+ login local
+ transport input ssh
+line vty 5 15
+ login local
+ transport input ssh
+!
+end
+
+AlphaDC#
