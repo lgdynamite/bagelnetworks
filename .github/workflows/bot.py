@@ -1,15 +1,6 @@
 ### teams Bot ###
 from webexteamsbot import TeamsBot
 from webexteamsbot.models import Response
-### Utilities Libraries
-import routers
-import useless_skills as useless
-import useful_skills as useful
-
-# Router Info 
-device_address = routers.router['host']
-device_username = routers.router['username']
-device_password = routers.router['password']
 
 # RESTCONF Setup
 port = '443'
@@ -18,10 +9,10 @@ headers = {'Content-Type': 'application/yang-data+json',
            'Accept': 'application/yang-data+json'}
 
 # Bot Details
-bot_email = '381Bot@webex.bot'
-teams_token = 'MmUwYjBiZjctODlkNC00MzVhLTk5NWQtMGQxNzY2M2EwZjI2MzlkNGI1YTAtNWM3_P0A1_5d96674f-de50-43d7-ae6b-8071b71cb457'
-bot_url = "https://0c52-66-188-237-165.ngrok.io"
-bot_app_name = 'CNIT-381 Network Auto Chat Bot'
+bot_email = 'AuvikBagelBot@webex.bot'
+teams_token = 'NGVmZDc2ZDctOGU3Ny00Njk1LWFlZTQtNmVhYWIxZjBhZjc1MGMxZGY2ZWQtNmM4_P0A1_d5fe8096-9b9a-43dd-bc72-9f86104a819b'
+bot_url = "https://webex-auvik-python.azurewebsites.net/"
+bot_app_name = 'Auvik Bagel Bot'
 
 # Create a Bot Object
 #   Note: debug mode prints out more details about processing to terminal
